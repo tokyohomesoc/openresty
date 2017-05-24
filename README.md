@@ -2,7 +2,7 @@
 
 | Branch | Travis CI |
 |:-------|:----------|
-| master | [![Build Status](https://travis-ci.org/tokyohomesoc/nginx.svg?branch=master)](https://travis-ci.org/tokyohomesoc/nginx) |
+| master | [![Build Status](https://travis-ci.org/tokyohomesoc/openresty.svg?branch=master)](https://travis-ci.org/tokyohomesoc/openresty) |
 
 
 ## Add Module
@@ -18,7 +18,7 @@
 ```
 MIT License
 
-Copyright (c) 2016 Tokyo Home SOC <github@homesoc.tokyo>
+Copyright (c) 2016-2017 Tokyo Home Security Operation Center
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
