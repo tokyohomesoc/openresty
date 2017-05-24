@@ -1,0 +1,25 @@
+dist: trusty
+sudo: required
+services:
+  - docker
+
+env:
+  global:
+  - DOCKER_VERSION=1.13.1-0~ubuntu-trusty
+  matrix:
+  - TEST_TARGET: openresty
+
+before_install:
+  # list docker-engine versions
+  - apt-cache madison docker-engine
+  # upgrade docker-engine to specific version
+  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y --force-yes docker-engine=${DOCKER_VERSION}
+  - docker version
+  - docker info
+
+script:
+  - make $TEST_TARGET
+
+notifications:
+  slack:
+    secure: G+gimsSTaQmUgZfRJSEQjtN6Wl0WQr8TiDjNiEQ9YBZVXZucd61Y6eC60fBqkTchNN2z9xjVYD/cIoTGMM2kjebNMtNkG2oQvhj7kVDtzBxQBkZ7WPrIKeOBodArJSVDm/i9oTGid35regCYYcDAJ9DgiwLydOz9WMu55iGH/3btIGUYaCQp6eT36owOctASWZTY1ZgvBzd9HZ+9B9BRo/ItV/YucNQ7390tv4fmewKce+hbbOdGte9fL8YPl6T4vJmfDaNBg6nFHYpkw8wzCJnb2Pet/T7ENUyFxpH4atsiDmoljeosAPnUaTurdaSy+UEpBgvPlv+zedNCjXx3nXLUIlxT4zrYqA4ntNWBJiDjDtp7I0Yg9oSkvoeSQsmZJCsjxZfkuqFnM2Q24gCASckC4IFx8luBKaUKbWTmlKY8KEvw0PlViKAJFi2ViIU7PhJBamePyYmCcsF//o4uLSncQqAN6HOab+8J2NKpxciBVDJyCQAgpkPJjac5EbHm17xzTPGmgR55iRhdx/5R/PPuL+vtq3G/wlNsU4TDVZqaXRaBpqKZcte32uWI2+1UxU9WAaoQVNz2b/K8sKiK5IlHY3lFta2Socx6eQuRTHMrqQSBYCRf8NmvGBiX2/6eVqSAsjtmVimUMxv+QJa5RCiy+A2f7c+SHqurs5H6DKA=
