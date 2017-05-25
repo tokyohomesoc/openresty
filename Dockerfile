@@ -5,6 +5,8 @@ MAINTAINER Tokyo HOME SOC <github@homesoc.tokyo>
 # Docker Build Arguments
 ## LuaRocks
 ARG LUAROCKS_VERSION="2.4.2"
+## lua-resty-auto-ssl
+ARG LUA_RESTY_AUTO_SSL=0.10.6
 ## OpenResty
 ARG RESTY_VERSION="1.11.2.3"
 ARG RESTY_OPENSSL_VERSION="1.0.2k"
@@ -51,7 +53,7 @@ ARG _LUAROCKS_CONFIG_DEPS="\
     --with-lua=/usr/local/openresty/luajit/ \
     --lua-suffix=jit \
     --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 \
-"
+    "
 
 
 # 1) Install apk dependencies
@@ -80,13 +82,13 @@ RUN \
     && cd /tmp \
     && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
         -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
-    && tar xzf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
+    && tar xzvf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
     && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz \
         -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
-    && tar xzf pcre-${RESTY_PCRE_VERSION}.tar.gz \
+    && tar xzvf pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
         -o openresty-${RESTY_VERSION}.tar.gz \
-    && tar xzf openresty-${RESTY_VERSION}.tar.gz \
+    && tar xzvf openresty-${RESTY_VERSION}.tar.gz \
     && cd /tmp/openresty-${RESTY_VERSION} \
     && ./configure -j${RESTY_J} ${_RESTY_CONFIG_DEPS} ${RESTY_CONFIG_OPTIONS} \
     && make -j${RESTY_J} \
@@ -113,6 +115,12 @@ RUN \
     && rm -rf \
         luarocks-${LUAROCKS_VERSION} \
         luarocks-${LUAROCKS_VERSION}.tar.gz \
+    \
+    #
+    ##
+    && luarocks install lua-resty-auto-ssl v${LUA_RESTY_AUTO_SSL} \
+    && mkdir /etc/resty-auto-ssl \
+    && chown www-data /etc/resty-auto-ssl \
     \
     && apk del .build-deps \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
