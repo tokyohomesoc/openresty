@@ -123,7 +123,7 @@ RUN \
     ## https://github.com/GUI/lua-resty-auto-ssl
     &&  /usr/local/openresty/luajit/bin/luarocks install lua-resty-auto-ssl ${LUA_RESTY_AUTO_SSL} \
     && mkdir /etc/resty-auto-ssl \
-    && chown www-data /etc/resty-auto-ssl \
+    && chown nginx /etc/resty-auto-ssl \
     \
     && apk del .build-deps \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
