@@ -3,6 +3,9 @@ FROM alpine:latest
 MAINTAINER Tokyo HOME SOC <github@homesoc.tokyo>
 
 # Docker Build Arguments
+## LuaRocks
+ARG LUAROCKS_VERSION="2.4.2"
+## OpenResty
 ARG RESTY_VERSION="1.11.2.3"
 ARG RESTY_OPENSSL_VERSION="1.0.2k"
 ARG RESTY_PCRE_VERSION="8.39"
@@ -43,6 +46,12 @@ ARG _RESTY_CONFIG_DEPS="\
     --with-openssl=/tmp/openssl-${RESTY_OPENSSL_VERSION} \
     --with-pcre=/tmp/pcre-${RESTY_PCRE_VERSION} \
     "
+ARG _LUAROCKS_CONFIG_DEPS="\
+    --prefix=/usr/local/openresty/luajit \
+    --with-lua=/usr/local/openresty/luajit/ \
+    --lua-suffix=jit \
+    --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 \
+"
 
 
 # 1) Install apk dependencies
@@ -69,11 +78,14 @@ RUN \
         libxslt \
         zlib \
     && cd /tmp \
-    && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
+    && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
+        -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
     && tar xzf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
-    && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
+    && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz \
+        -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && tar xzf pcre-${RESTY_PCRE_VERSION}.tar.gz \
-    && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz -o openresty-${RESTY_VERSION}.tar.gz \
+    && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
+        -o openresty-${RESTY_VERSION}.tar.gz \
     && tar xzf openresty-${RESTY_VERSION}.tar.gz \
     && cd /tmp/openresty-${RESTY_VERSION} \
     && ./configure -j${RESTY_J} ${_RESTY_CONFIG_DEPS} ${RESTY_CONFIG_OPTIONS} \
@@ -83,8 +95,25 @@ RUN \
     && rm -rf \
         openssl-${RESTY_OPENSSL_VERSION} \
         openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
-        openresty-${RESTY_VERSION}.tar.gz openresty-${RESTY_VERSION} \
-        pcre-${RESTY_PCRE_VERSION}.tar.gz pcre-${RESTY_PCRE_VERSION} \
+        openresty-${RESTY_VERSION} \
+        openresty-${RESTY_VERSION}.tar.gz \
+        pcre-${RESTY_PCRE_VERSION} \
+        pcre-${RESTY_PCRE_VERSION}.tar.gz \
+    \
+    # Install LuaRocks
+    ## http://openresty.org/en/using-luarocks.html
+    && curl -fSL http://luarocks.github.io/luarocks/releases/luarocks-${LUAROCKS_VERSION}.tar.gz \
+        -o luarocks-${LUAROCKS_VERSION}.tar.gz \
+    && tar -xzvf luarocks-${LUAROCKS_VERSION}.tar.gz \
+    && cd luarocks-${LUAROCKS_VERSION} \
+    && ./configure ${_LUAROCKS_CONFIG_DEPS} \
+    && make build \
+    && make install \
+    && cd .. \
+    && rm -rf \
+        luarocks-${LUAROCKS_VERSION} \
+        luarocks-${LUAROCKS_VERSION}.tar.gz \
+    \
     && apk del .build-deps \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
     && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log
