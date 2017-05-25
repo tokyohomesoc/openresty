@@ -79,6 +79,7 @@ RUN \
         libgcc \
         libxslt \
         zlib \
+        bash \
     && cd /tmp \
     && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
         -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
