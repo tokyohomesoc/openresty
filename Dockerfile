@@ -73,6 +73,7 @@ RUN \
         perl-dev \
         readline-dev \
         zlib-dev \
+        openssl-dev \
     && apk add --no-cache \
         gd \
         geoip \
