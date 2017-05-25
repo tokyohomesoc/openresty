@@ -82,13 +82,13 @@ RUN \
     && cd /tmp \
     && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
         -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
-    && tar xzvf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
+    && tar xzf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
     && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz \
         -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
-    && tar xzvf pcre-${RESTY_PCRE_VERSION}.tar.gz \
+    && tar xzf pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
         -o openresty-${RESTY_VERSION}.tar.gz \
-    && tar xzvf openresty-${RESTY_VERSION}.tar.gz \
+    && tar xzf openresty-${RESTY_VERSION}.tar.gz \
     && cd /tmp/openresty-${RESTY_VERSION} \
     && ./configure -j${RESTY_J} ${_RESTY_CONFIG_DEPS} ${RESTY_CONFIG_OPTIONS} \
     && make -j${RESTY_J} \
@@ -106,7 +106,7 @@ RUN \
     ## http://openresty.org/en/using-luarocks.html
     && curl -fSL http://luarocks.github.io/luarocks/releases/luarocks-${LUAROCKS_VERSION}.tar.gz \
         -o luarocks-${LUAROCKS_VERSION}.tar.gz \
-    && tar -xzvf luarocks-${LUAROCKS_VERSION}.tar.gz \
+    && tar -xzf luarocks-${LUAROCKS_VERSION}.tar.gz \
     && cd luarocks-${LUAROCKS_VERSION} \
     && ./configure ${_LUAROCKS_CONFIG_DEPS} \
     && make build \
@@ -116,8 +116,8 @@ RUN \
         luarocks-${LUAROCKS_VERSION} \
         luarocks-${LUAROCKS_VERSION}.tar.gz \
     \
-    #
-    ##
+    # Install lua-resty-auto-ssl
+    ## https://github.com/GUI/lua-resty-auto-ssl
     && luarocks install lua-resty-auto-ssl v${LUA_RESTY_AUTO_SSL} \
     && mkdir /etc/resty-auto-ssl \
     && chown www-data /etc/resty-auto-ssl \
