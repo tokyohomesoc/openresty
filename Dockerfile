@@ -118,7 +118,7 @@ RUN \
     \
     # Install lua-resty-auto-ssl
     ## https://github.com/GUI/lua-resty-auto-ssl
-    && /usr/local/openresty/luajit/luarocks install lua-resty-auto-ssl v${LUA_RESTY_AUTO_SSL} \
+    &&  /usr/local/openresty/luajit/bin/luarocks install lua-resty-auto-ssl v${LUA_RESTY_AUTO_SSL} \
     && mkdir /etc/resty-auto-ssl \
     && chown www-data /etc/resty-auto-ssl \
     \
