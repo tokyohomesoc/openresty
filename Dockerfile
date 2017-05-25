@@ -6,7 +6,7 @@ MAINTAINER Tokyo HOME SOC <github@homesoc.tokyo>
 ## LuaRocks
 ARG LUAROCKS_VERSION="2.4.2"
 ## lua-resty-auto-ssl
-ARG LUA_RESTY_AUTO_SSL=0.10.6
+ARG LUA_RESTY_AUTO_SSL=0.10.6-1
 ## OpenResty
 ARG RESTY_VERSION="1.11.2.3"
 ARG RESTY_OPENSSL_VERSION="1.0.2k"
