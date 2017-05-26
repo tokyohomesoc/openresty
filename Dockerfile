@@ -9,7 +9,7 @@ ARG LUAROCKS_VERSION="2.4.2"
 ARG LUA_RESTY_AUTO_SSL="0.10.6-1"
 ## OpenResty
 ARG RESTY_VERSION="1.11.2.3"
-ARG RESTY_OPENSSL_VERSION="1.0.2k"
+ARG RESTY_OPENSSL_VERSION="1.0.2k-r0"
 ARG RESTY_PCRE_VERSION="8.39"
 ARG RESTY_J="1"
 ARG RESTY_CONFIG_OPTIONS="\
@@ -73,7 +73,7 @@ RUN \
         perl-dev \
         readline-dev \
         zlib-dev \
-        openssl-dev \
+        openssl-dev=${RESTY_OPENSSL_VERSION} \
     && apk add --no-cache \
         gd \
         geoip \
@@ -81,7 +81,7 @@ RUN \
         libxslt \
         zlib \
         bash \
-        openssl \
+        openssl=${RESTY_OPENSSL_VERSION} \
     && cd /tmp \
 #    && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 #        -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
