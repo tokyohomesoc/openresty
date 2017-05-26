@@ -73,7 +73,7 @@ RUN \
         perl-dev \
         readline-dev \
         zlib-dev \
-        openssl-dev=${RESTY_OPENSSL_VERSION} \
+        openssl-dev \
     && apk add --no-cache \
         gd \
         geoip \
@@ -81,7 +81,7 @@ RUN \
         libxslt \
         zlib \
         bash \
-        openssl=${RESTY_OPENSSL_VERSION} \
+        openssl \
     && cd /tmp \
 #    && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 #        -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
