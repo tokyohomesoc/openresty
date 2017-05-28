@@ -44,9 +44,9 @@ ARG RESTY_CONFIG_OPTIONS="\
     "
 
 # These are not intended to be user-specified
-#    --with-openssl=/tmp/openssl-${RESTY_OPENSSL_VERSION} \
 ARG _RESTY_CONFIG_DEPS="\
-    --with-pcre=/usr/local/src/pcre-${RESTY_PCRE_VERSION} \
+#    --with-pcre=/usr/local/src/pcre-${RESTY_PCRE_VERSION} \
+#    --with-openssl=/tmp/openssl-${RESTY_OPENSSL_VERSION} \
     "
 ARG _LUAROCKS_CONFIG_DEPS="\
     --prefix=/usr/local/openresty/luajit \
@@ -87,9 +87,9 @@ RUN \
 #    && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 #        -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 #    && tar xzf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
-    && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz \
-        -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
-    && tar xzf pcre-${RESTY_PCRE_VERSION}.tar.gz \
+#    && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz \
+#        -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
+#    && tar xzf pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
         -o openresty-${RESTY_VERSION}.tar.gz \
     && tar xzf openresty-${RESTY_VERSION}.tar.gz \
@@ -119,10 +119,10 @@ RUN \
     && rm -rf \
 #        openssl-${RESTY_OPENSSL_VERSION} \
 #        openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
+#        pcre-${RESTY_PCRE_VERSION} \
+#        pcre-${RESTY_PCRE_VERSION}.tar.gz \
         openresty-${RESTY_VERSION} \
         openresty-${RESTY_VERSION}.tar.gz \
-        pcre-${RESTY_PCRE_VERSION} \
-        pcre-${RESTY_PCRE_VERSION}.tar.gz \
     \
     # Install LuaRocks
     ## http://openresty.org/en/using-luarocks.html
