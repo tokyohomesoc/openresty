@@ -82,7 +82,8 @@ RUN \
         zlib \
         bash \
         openssl=${RESTY_OPENSSL_VERSION} \
-    && cd /tmp \
+    && mkdir -p /usr/local/src \
+    && cd /usr/local/src \
 #    && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 #        -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 #    && tar xzf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
@@ -92,11 +93,29 @@ RUN \
     && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
         -o openresty-${RESTY_VERSION}.tar.gz \
     && tar xzf openresty-${RESTY_VERSION}.tar.gz \
-    && cd /tmp/openresty-${RESTY_VERSION} \
+    && cd openresty-${RESTY_VERSION} \
+#   =============================================
+    && sed -ie 's/\[http_iconv/#\[http_iconv/g' configure \
+    && sed -ie 's/\[http_echo/#\[http_echo/g' configure \
+    && sed -ie 's/\[http_xss/#\[http_xss/g' configure \
+    && sed -ie 's/\[http_coolkit/#\[http_coolkit/g' configure \
+    && sed -ie 's/\[http_set_misc/#\[http_set_misc/g' configure \
+    && sed -ie 's/\[http_form_input/#\[http_form_input/g' configure \
+    && sed -ie 's/\[http_encrypted_session/#\[http_encrypted_session/g' configure \
+    && sed -ie 's/\[http_drizzle/#\[http_drizzle/g' configure \
+    && sed -ie 's/\[http_postgres/#\[http_postgres/g' configure \
+    && sed -ie 's/\[http_lua_upstream/#\[http_lua_upstream/g' configure \
+    && sed -ie 's/\[http_array_var/#\[http_array_var/g' configure \
+    && sed -ie 's/\[http_memc/#\[http_memc/g' configure \
+    && sed -ie 's/\[http_redis2/#\[http_redis2/g' configure \
+    && sed -ie 's/\[http_redis/#\[http_redis/g' configure \
+    && sed -ie 's/\[http_rds_json/#\[http_rds_json/g' configure \
+    && sed -ie 's/\[http_rds_csv/#\[http_rds_csv/g' configure \
+#   =============================================
     && ./configure -j${RESTY_J} ${_RESTY_CONFIG_DEPS} ${RESTY_CONFIG_OPTIONS} \
     && make -j${RESTY_J} \
     && make -j${RESTY_J} install \
-    && cd /tmp \
+    && cd /usr/local/src \
     && rm -rf \
 #        openssl-${RESTY_OPENSSL_VERSION} \
 #        openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
