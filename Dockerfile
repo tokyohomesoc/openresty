@@ -157,7 +157,8 @@ RUN \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
     && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log \
     \
-    && mkdir -p /etc/resty-auto-ssl/storage/file
+    && mkdir -p /etc/resty-auto-ssl/storage/file \
+    && chmod 700 /etc/resty-auto-ssl/storage/file
 
 # Add additional binaries into PATH for convenience
 ENV PATH=$PATH:/usr/local/openresty/luajit/bin/:/usr/local/openresty/nginx/sbin/:/usr/local/openresty/bin/
