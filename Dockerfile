@@ -46,7 +46,7 @@ ARG RESTY_CONFIG_OPTIONS="\
 # These are not intended to be user-specified
 #    --with-openssl=/tmp/openssl-${RESTY_OPENSSL_VERSION} \
 ARG _RESTY_CONFIG_DEPS="\
-    --with-pcre=/tmp/pcre-${RESTY_PCRE_VERSION} \
+    --with-pcre=/usr/local/src/pcre-${RESTY_PCRE_VERSION} \
     "
 ARG _LUAROCKS_CONFIG_DEPS="\
     --prefix=/usr/local/openresty/luajit \
