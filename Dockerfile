@@ -3,6 +3,8 @@ FROM alpine:latest
 MAINTAINER Tokyo HOME SOC <github@homesoc.tokyo>
 
 # Docker Build Arguments
+# Environment variable
+ARG TIMEZONE=Asia/Tokyo
 ## LuaRocks
 ARG LUAROCKS_VERSION="2.4.2"
 ## lua-resty-auto-ssl
@@ -15,29 +17,46 @@ ARG RESTY_J="1"
 ARG RESTY_CONFIG_OPTIONS="\
 #    --with-file-aio \
 #    --with-http_addition_module \
-    --with-http_auth_request_module \
 #    --with-http_dav_module \
 #    --with-http_flv_module \
 #    --with-http_geoip_module=dynamic \
-    --with-http_gunzip_module \
-    --with-http_gzip_static_module \
 #    --with-http_image_filter_module=dynamic \
 #    --with-http_mp4_module \
 #    --with-http_random_index_module \
 #    --with-http_realip_module \
 #    --with-http_secure_link_module \
 #    --with-http_slice_module \
-    --with-http_ssl_module \
-    --with-http_stub_status_module \
 #    --with-http_sub_module \
-    --with-http_v2_module \
 #    --with-http_xslt_module=dynamic \
-    --with-ipv6 \
 #    --with-mail \
 #    --with-mail_ssl_module \
 #    --with-md5-asm \
 #    --with-pcre-jit \
 #    --with-sha1-asm \
+    \
+    --prefix=/etc/nginx \
+    --sbin-path=/usr/sbin/nginx \
+    --modules-path=/usr/lib/nginx/modules \
+    --conf-path=/etc/nginx/nginx.conf \
+    --error-log-path=/var/log/nginx/error.log \
+    --http-log-path=/var/log/nginx/access.log \
+    --pid-path=/var/run/nginx.pid \
+    --lock-path=/var/run/nginx.lock \
+    --http-client-body-temp-path=/var/cache/nginx/client_temp \
+    --http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+    --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+    --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+    --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+    --user=nginx \
+    --group=nginx \
+    \
+    --with-http_auth_request_module \
+    --with-http_gunzip_module \
+    --with-http_gzip_static_module \
+    --with-http_ssl_module \
+    --with-http_stub_status_module \
+    --with-http_v2_module \
+    --with-ipv6 \
     --with-stream \
     --with-stream_ssl_module \
     --with-threads \
@@ -62,7 +81,14 @@ ARG _LUAROCKS_CONFIG_DEPS="\
 # 4) Cleanup
 
 RUN \
-    apk add --no-cache --virtual .build-deps \
+       addgroup -S nginx \
+    && adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
+    # TIMEZONE
+    && apk add --no-cache \
+        tzdata \
+    && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    && apk del tzdata \
+    && apk add --no-cache --virtual .build-deps \
         build-base \
         curl \
         gd-dev \
@@ -76,7 +102,7 @@ RUN \
         openssl-dev=${RESTY_OPENSSL_VERSION} \
     && apk add --no-cache \
         gd \
-        geoip \
+#        geoip \
         libgcc \
         libxslt \
         zlib \
