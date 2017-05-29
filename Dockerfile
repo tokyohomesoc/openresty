@@ -155,7 +155,10 @@ RUN \
     && mkdir /etc/resty-auto-ssl \
     && apk del .build-deps \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
-    && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log
+    && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log \
+    && mkdir -p /etc/resty-auto-ssl/storage \
+    && chown nginx:nginx -R /etc/resty-auto-ssl/storage \
+    && chmod 700 -R /etc/resty-auto-ssl/storage/file
 
 # Add additional binaries into PATH for convenience
 ENV PATH=$PATH:/usr/local/openresty/luajit/bin/:/usr/local/openresty/nginx/sbin/:/usr/local/openresty/bin/
