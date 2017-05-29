@@ -157,6 +157,7 @@ RUN \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
     && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log \
     && mkdir -p /etc/resty-auto-ssl/storage \
+    && mkdir -p /etc/resty-auto-ssl/storage/file \
     && chown nginx:nginx -R /etc/resty-auto-ssl/storage \
     && chmod 700 -R /etc/resty-auto-ssl/storage/file
 
